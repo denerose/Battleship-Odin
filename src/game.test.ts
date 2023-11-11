@@ -8,6 +8,14 @@ describe('gameboard setup', () => {
   });
 });
 
+describe('find a tile', () => {
+  test('findTile(0,0) returns gameBoard[0]', () => {
+    const p1board = new GameBoard(3)
+    expect(p1board.findTile(0, 0)).toBe(p1board.gameBoard[0]);
+  });
+});
+
+
 describe('place a ship', () => {
   test('2 tile ship can be placed', () => {
     const p1board = new GameBoard(3)
@@ -33,4 +41,22 @@ describe('cannot place a ship on edge of board', () => {
     const shipPlaced = p1board.placeShip('small', 2, p1board.gameBoard[2])
     expect(shipPlaced).toBe(false);
   });
+});
+
+describe('board can take hits', () => {
+  const p1board = new GameBoard(3)
+  p1board.placeShip('small', 2, p1board.gameBoard[0])
+
+  test('unoccupied tile records a miss', () => {
+    p1board.receiveAttack(p1board.gameBoard[3])
+    expect(p1board.gameBoard[3].hit).toBeTruthy
+  })
+
+  test('occupied tile pushes a hit to relevant ship', () => {
+    const shipToHit = p1board.gameBoard[0].shipKey
+    p1board.receiveAttack(p1board.gameBoard[0])
+    expect(shipToHit?.hits).toBe(1)
+    expect(p1board.gameBoard[0].hit).toBeTruthy
+
+  })
 });

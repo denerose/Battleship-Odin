@@ -53,5 +53,18 @@ export class GameBoard {
         return true;
     }
 
+    public receiveAttack(attackedTile: Tile) {
+        if (attackedTile.hit) { return false }
+        else if (attackedTile.occupied) {
+            attackedTile.hit = true
+            attackedTile.shipKey?.takeHit()
+        }
+        else attackedTile.hit = true
+        return true
+    }
+
+    public findTile(x: number, y: number) {
+        return this.gameBoard.find((tile) => tile.x == x && tile.y == y)
+    }
 
 }
