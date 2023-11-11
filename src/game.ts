@@ -5,16 +5,9 @@ class Tile {
     constructor(
         public x: number,
         public y: number,
-        myBoard?: GameBoard,
         public occupied: boolean = false,
         public hit: boolean = false,
         public shipKey?: Ship) { }
-
-    triggerPlaceShip() {
-        if (!this.occupied) {
-
-        } else { return new Error('occupied!!') }
-    }
 }
 
 export class GameBoard {
@@ -30,7 +23,7 @@ export class GameBoard {
         }
     }
 
-    checkTiles(startTile: Tile, length: number) {
+    placementGrid(startTile: Tile, length: number) {
         const tilesToCheck = []
         let currentTile: Tile = startTile
         if (tilesToCheck.length === 0) {
@@ -47,9 +40,9 @@ export class GameBoard {
     }
 
     public placeShip(type: string, size: number, startTile: Tile) {
-        const placementArea = this.checkTiles(startTile, size)
-        if (placementArea.length === 0) { return new Error('Ship will overflow the board') }
-        else if (placementArea.some((tile) => tile.occupied)) { return new Error('Already occupied') }
+        const placementArea = this.placementGrid(startTile, size)
+        if (placementArea.length === 0) { return false }
+        else if (placementArea.some((tile) => tile.occupied)) { return false }
         else {
             const shipToPlace = new Ship(type, size)
             placementArea.forEach((tile) => {
@@ -57,6 +50,7 @@ export class GameBoard {
                 tile.shipKey = shipToPlace
             })
         }
+        return true;
     }
 
 
