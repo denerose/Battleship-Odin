@@ -67,4 +67,9 @@ export class GameBoard {
         return this.gameBoard.find((tile) => tile.x == x && tile.y == y)
     }
 
+    public checkSunk() {
+        const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied)
+        return occupiedTiles.every((tile) => tile.shipKey?.isSunk)
+    }
+
 }

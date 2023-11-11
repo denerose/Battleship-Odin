@@ -57,6 +57,28 @@ describe('board can take hits', () => {
     p1board.receiveAttack(p1board.gameBoard[0])
     expect(shipToHit?.hits).toBe(1)
     expect(p1board.gameBoard[0].hit).toBeTruthy
-
   })
+
+  test('cannot re-hit same tile', () => {
+    const shipToHit = p1board.gameBoard[0].shipKey
+    p1board.receiveAttack(p1board.gameBoard[0])
+    p1board.receiveAttack(p1board.gameBoard[0])
+    expect(shipToHit?.hits).toBe(1)
+  })
+
 });
+
+describe('gameboard can report if sunk', () => {
+  const p1board = new GameBoard(3)
+  p1board.placeShip('small', 2, p1board.gameBoard[0])
+  p1board.receiveAttack(p1board.gameBoard[0])
+
+  test('unsunk returns false', () => {
+    expect(p1board.checkSunk()).toBeFalsy
+  })
+
+  test('sunk returns true', () => {
+    p1board.receiveAttack(p1board.gameBoard[1])
+    expect(p1board.checkSunk()).toBeTruthy
+  })
+})
