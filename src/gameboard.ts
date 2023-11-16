@@ -23,13 +23,13 @@ export class GameBoard {
         }
     }
 
-    placementGrid(startTile: Tile, length: number) {
+    placementGrid(startTile: Tile, shipSize: number) {
         const tilesToCheck = []
         let currentTile: Tile = startTile
         if (tilesToCheck.length === 0) {
             tilesToCheck.push(currentTile)
         }
-        while (length > tilesToCheck.length) {
+        while (shipSize > tilesToCheck.length) {
             let newTile = this.gameBoard.find((newTile) => newTile.x === currentTile.x && newTile.y === currentTile.y + 1);
             if (newTile) {
                 currentTile = newTile

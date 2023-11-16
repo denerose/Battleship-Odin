@@ -4,7 +4,7 @@ export class Player {
 
     constructor(
         public name: string,
-        public ships = [{ type: 'tiny', length: 1 }, { type: 'small', length: 2 }],
+        public ships = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }],
         public board = new GameBoard(9),
         public placingShips = true,
         public takingTurn = true
@@ -26,5 +26,17 @@ export class Player {
 
     public setTurn() {
         this.takingTurn = true
+    }
+
+    public placeShip(type: string, size: number, x: number, y: number) {
+        if (this.ships.length === 0) {
+            this.placingShips = false
+            return false
+        }
+        const target = this.board.findTile(x, y)
+        if (target) {
+            this.board.placeShip(type, size, target)
+            return true
+        }
     }
 }

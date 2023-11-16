@@ -1,14 +1,13 @@
 
-const shipTypes = ['tiny', 'small', 'big', 'huge']
 
 export class Ship {
     type: string = 'small'
-    length: number = 0
+    size: number = 0
     hits: number = 0
-    isSunk = this.hits >= this.length ? true : false
+    isSunk = this.hits >= this.size ? true : false
 
-    constructor(type: string, length: number) {
-        this.length = length;
+    constructor(type: string, size: number) {
+        this.size = size;
         this.type = type;
     }
 
