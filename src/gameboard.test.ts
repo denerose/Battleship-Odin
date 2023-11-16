@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { GameBoard } from './game';
+import { GameBoard } from './gameboard';
 
 describe('gameboard setup', () => {
   test('new gameboard creates a gameboard array', () => {
