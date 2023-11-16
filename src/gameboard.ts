@@ -1,6 +1,6 @@
 import { Ship } from "./ship"
 
-class Tile {
+export class Tile {
 
     constructor(
         public x: number,

@@ -1,0 +1,60 @@
+:root {
+    --total: 9;
+    --red: #bd2323;
+    --blue: #2361bd;
+}
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 1000px;
+    margin: auto;
+}
+
+#P1 {
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+#P2 {
+    color: var(--red);
+    border-color: var(--red);
+}
+
+.playerFrame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    margin: auto;
+    width: 400px;
+    height: 400px;
+    border: 1px solid;
+    grid-template-columns: repeat(var(--total), 1fr);
+    grid-template-rows: repeat(var(--total), 1fr);
+}
+
+.tile {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 0.5px solid;
+}
+
+.miss {
+    background-color: #333;
+}
+
+.hit {
+    background-color: lime;
+}
+
+.myship {
+    background-color: aqua;
+}

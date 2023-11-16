@@ -17,8 +17,7 @@ export class Player {
         if (target && !target.hit) {
             enemyPlayer.board.receiveAttack(target);
             this.takingTurn = false
-            if (!enemyPlayer.board.checkSunk())
-                enemyPlayer.setTurn()
+            enemyPlayer.setTurn()
             return true
         }
         else {
