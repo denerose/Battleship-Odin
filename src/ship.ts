@@ -1,4 +1,8 @@
 
+export interface shipProps {
+    type: string,
+    size: number,
+}
 
 export class Ship {
     type: string = 'small'

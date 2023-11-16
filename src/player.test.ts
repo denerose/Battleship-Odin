@@ -20,7 +20,7 @@ describe('player can place ships', () => {
   const P1 = new Player("Player1");
 
   test('P1 places a ship', () => {
-    P1.placeShip("tiny", 1, 0, 0)
-    expect(P1.board.gameBoard[0].shipKey?.type).toBe("tiny");
+    P1.placeShip(0, 0)
+    expect(P1.board.gameBoard[0].shipKey?.type).toBe("small");
   });
 });

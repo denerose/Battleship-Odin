@@ -1,13 +1,15 @@
 import { GameBoard } from "./gameboard";
+import { shipProps } from "./ship";
 
 export class Player {
 
     constructor(
         public name: string,
-        public ships = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }],
+        public human: boolean = true,
+        public takingTurn = true,
+        public ships: shipProps[] = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }],
         public board = new GameBoard(9),
         public placingShips = true,
-        public takingTurn = true
     ) { }
 
     public placeAttack(enemyPlayer: Player, x: number, y: number) {
@@ -28,15 +30,19 @@ export class Player {
         this.takingTurn = true
     }
 
-    public placeShip(type: string, size: number, x: number, y: number) {
-        if (this.ships.length === 0) {
-            this.placingShips = false
-            return false
+    public placeShip(x: number, y: number) {
+        if (this.placingShips) {
+            if (this.ships.length === 0) {
+                this.placingShips = false
+                return false
+            }
+            const shipToPlace = this.ships.pop()
+            const target = this.board.findTile(x, y)
+            if (target && shipToPlace) {
+                this.board.placeShip(shipToPlace.type, shipToPlace.size, target)
+                return true
+            }
         }
-        const target = this.board.findTile(x, y)
-        if (target) {
-            this.board.placeShip(type, size, target)
-            return true
-        }
+        else return false
     }
 }
