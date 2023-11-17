@@ -6,7 +6,7 @@ export interface shipProps {
 
 export class Ship {
     type: string = 'small'
-    size: number = 0
+    size: number = 2
     hits: number = 0
     isSunk = this.hits >= this.size ? true : false
 

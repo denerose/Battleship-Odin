@@ -13,6 +13,7 @@ function createTile(owner: string, tile: Tile) {
     }
     else if (tile.hit && !tile.occupied) {
         newTile.className = "tile miss"
+        newTile.innerText = "x"
     }
     else if (tile.hit && tile.occupied) {
         newTile.className = "tile hit"
@@ -21,8 +22,10 @@ function createTile(owner: string, tile: Tile) {
         newTile.className = "tile"
     }
     newTile.addEventListener('click', () => {
-        game.handleClick(owner, tile.x, tile.y)
-        refreshBoards()
+        if (game.gameInPlay) {
+            game.handleClick(owner, tile.x, tile.y)
+            refreshBoards()
+        }
     })
     return newTile
 }

@@ -45,16 +45,18 @@ main {
     height: 100%;
     box-sizing: border-box;
     border: 0.5px solid;
+    text-align: center;
+    padding: 20%;
 }
 
 .miss {
-    background-color: #333;
+    background-color: #d5d0d0;
 }
 
 .hit {
-    background-color: lime;
+    background-color: rgb(115, 201, 115);
 }
 
 .myship {
-    background-color: aqua;
+    background-color: rgb(100, 242, 242);
 }

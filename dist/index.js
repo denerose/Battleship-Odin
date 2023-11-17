@@ -1,10 +1,22 @@
 "use strict";
 
+// src/ai.ts
+function aiTurn(aiPlayer, targetPlayer) {
+  if (aiPlayer.placingShips) {
+    return;
+  } else if (!aiPlayer.placingShips) {
+    const legalMoves = targetPlayer.board.getVacantTiles();
+    const coords = Math.floor(Math.random() * legalMoves.length) + 1;
+    const target = legalMoves[coords];
+    aiPlayer.placeAttack(targetPlayer, target.x, target.y);
+  }
+}
+
 // src/ship.ts
 var Ship = class {
   constructor(type, size) {
     this.type = "small";
-    this.size = 0;
+    this.size = 2;
     this.hits = 0;
     this.isSunk = this.hits >= this.size ? true : false;
     this.size = size;
@@ -82,9 +94,13 @@ var GameBoard = class {
   checkSunk() {
     const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied);
     return occupiedTiles.every((tile) => {
-      var _a;
-      return (_a = tile.shipKey) == null ? void 0 : _a.isSunk;
+      if (tile.shipKey) {
+        tile.shipKey.isSunk;
+      }
     });
+  }
+  getVacantTiles() {
+    return this.gameBoard.filter((tile) => !tile.hit);
   }
 };
 
@@ -131,7 +147,7 @@ var Player = class {
 
 // src/game.ts
 var P1 = new Player("P1");
-var P2 = new Player("P2");
+var P2 = new Player("P2", false, false);
 var winner = "TBC";
 var gameInPlay = true;
 function setupGame() {
@@ -140,8 +156,10 @@ function setupGame() {
   gameInPlay = true;
   P1.placeShip(1, 1);
   P1.placeShip(2, 2);
+  P1.placingShips = false;
   P2.placeShip(1, 1);
   P2.placeShip(2, 2);
+  P2.placingShips = false;
 }
 var getCurrentPlayer = () => {
   if (P1.takingTurn && !P2.takingTurn) {
@@ -172,23 +190,29 @@ function handleClick(boardName, x, y) {
   }
   if (boardName === enemyPlayer.name && !currentPlayer.placingShips) {
     currentPlayer.placeAttack(enemyPlayer, x, y);
-    checkWinner();
+    let isWinner = checkWinner();
+    if (gameInPlay && !enemyPlayer.human) {
+      aiTurn(enemyPlayer, currentPlayer);
+    }
     return true;
   }
 }
 function checkWinner() {
-  if (!P1.board.checkSunk() && !P2.board.checkSunk()) {
+  if (P1.board.checkSunk() === false && !P2.board.checkSunk() === false) {
+    gameInPlay = true;
     return false;
-  } else if (P1.board.checkSunk()) {
+  } else if (P1.board.checkSunk() === true) {
     winner = P2.name;
     gameInPlay = false;
     return winner;
-  } else if (P2.board.checkSunk()) {
+  } else if (P2.board.checkSunk() === true) {
     winner = P1.name;
     gameInPlay = false;
     return winner;
-  } else
+  } else {
+    gameInPlay = true;
     return false;
+  }
 }
 function getP1Board() {
   return P1.board.gameBoard;
@@ -207,14 +231,17 @@ function createTile(owner, tile) {
     newTile.className = "tile myship";
   } else if (tile.hit && !tile.occupied) {
     newTile.className = "tile miss";
+    newTile.innerText = "x";
   } else if (tile.hit && tile.occupied) {
     newTile.className = "tile hit";
   } else {
     newTile.className = "tile";
   }
   newTile.addEventListener("click", () => {
-    handleClick(owner, tile.x, tile.y);
-    refreshBoards();
+    if (gameInPlay) {
+      handleClick(owner, tile.x, tile.y);
+      refreshBoards();
+    }
   });
   return newTile;
 }

@@ -69,7 +69,11 @@ export class GameBoard {
 
     public checkSunk() {
         const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied)
-        return occupiedTiles.every((tile) => tile.shipKey?.isSunk)
+        return occupiedTiles.every((tile) => { if (tile.shipKey) { tile.shipKey.isSunk } })
+    }
+
+    public getVacantTiles() {
+        return this.gameBoard.filter((tile) => !tile.hit);
     }
 
 }

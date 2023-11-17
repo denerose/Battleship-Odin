@@ -1,6 +1,7 @@
+import { aiTurn } from "./ai";
 import { Player } from "./player";
 export let P1: Player = new Player("P1")
-export let P2: Player = new Player("P2")
+export let P2: Player = new Player("P2", false, false)
 export let winner = "TBC"
 export let gameInPlay = true
 
@@ -12,8 +13,10 @@ export function setupGame() {
     // temporary ship placement and setup
     P1.placeShip(1, 1)
     P1.placeShip(2, 2)
+    P1.placingShips = false
     P2.placeShip(1, 1)
     P2.placeShip(2, 2)
+    P2.placingShips = false
 }
 
 const getCurrentPlayer = () => {
@@ -38,24 +41,33 @@ export function handleClick(boardName: string, x: number, y: number) {
     }
     if (boardName === enemyPlayer.name && !currentPlayer.placingShips) {
         currentPlayer.placeAttack(enemyPlayer, x, y)
-        checkWinner()
+        let isWinner = checkWinner()
+        if (gameInPlay && !enemyPlayer.human) {
+            aiTurn(enemyPlayer, currentPlayer)
+        }
         return true
     }
 }
 
 function checkWinner() {
-    if (!P1.board.checkSunk() && !P2.board.checkSunk()) { return false }
-    else if (P1.board.checkSunk()) {
+    if (P1.board.checkSunk() === false && !P2.board.checkSunk() === false) {
+        gameInPlay = true
+        return false
+    }
+    else if (P1.board.checkSunk() === true) {
         winner = P2.name
         gameInPlay = false
         return winner
     }
-    else if (P2.board.checkSunk()) {
+    else if (P2.board.checkSunk() === true) {
         winner = P1.name
         gameInPlay = false
         return winner
     }
-    else return false
+    else {
+        gameInPlay = true
+        return false
+    }
 }
 
 export function getP1Board() {
