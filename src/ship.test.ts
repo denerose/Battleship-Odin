@@ -21,6 +21,6 @@ describe('hits > length = sunk', () => {
     const newShip = new Ship('small', 2)
     newShip.takeHit()
     newShip.takeHit()
-    expect(newShip.isSunk).toBe(true);
+    expect(newShip.isSunk()).toBe(true);
   });
 });

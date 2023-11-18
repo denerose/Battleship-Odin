@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 
 export interface shipProps {
     type: string,
@@ -6,14 +7,17 @@ export interface shipProps {
 
 export class Ship {
     type: string = 'small'
-    size: number = 2
+    size: number
     hits: number = 0
-    isSunk = this.hits >= this.size ? true : false
+    key
 
     constructor(type: string, size: number) {
         this.size = size;
         this.type = type;
+        this.key = uuid()
     }
+
+    public isSunk = () => { return this.hits >= this.size ? true : false };
 
     public takeHit() {
         this.hits++

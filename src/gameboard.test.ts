@@ -15,14 +15,26 @@ describe('find a tile', () => {
   });
 });
 
+describe('find a ship', () => {
+  test('findShipFromKey returns a Ship', () => {
+    const P1 = new GameBoard(3)
+    const target = P1.gameBoard[0]
+    P1.placeShip("tiny", 1, target)
+    console.log(target.shipKey)
+    expect(P1.findShipFromKey(target.shipKey as string)).toEqual(P1.activeShips[0]);
+  });
+});
+
 
 describe('place a ship', () => {
   test('2 tile ship can be placed', () => {
     const p1board = new GameBoard(3)
     p1board.placeShip('tiny', 2, p1board.gameBoard[0])
+    const placedShip = p1board.activeShips[0]
     expect(p1board.gameBoard[0].occupied).toBe(true);
     expect(p1board.gameBoard[1].occupied).toBe(true);
     expect(p1board.gameBoard[3].occupied).toBe(false);
+    expect(p1board.gameBoard[0].shipKey).toEqual(placedShip.key)
   });
 });
 
@@ -46,6 +58,7 @@ describe('cannot place a ship on edge of board', () => {
 describe('board can take hits', () => {
   const p1board = new GameBoard(3)
   p1board.placeShip('small', 2, p1board.gameBoard[0])
+  const testShip = p1board.activeShips[0]
 
   test('unoccupied tile records a miss', () => {
     p1board.receiveAttack(p1board.gameBoard[3])
@@ -53,17 +66,15 @@ describe('board can take hits', () => {
   })
 
   test('occupied tile pushes a hit to relevant ship', () => {
-    const shipToHit = p1board.gameBoard[0].shipKey
     p1board.receiveAttack(p1board.gameBoard[0])
-    expect(shipToHit?.hits).toBe(1)
+    expect(testShip?.hits).toBe(1)
     expect(p1board.gameBoard[0].hit).toBeTruthy
   })
 
   test('cannot re-hit same tile', () => {
-    const shipToHit = p1board.gameBoard[0].shipKey
     p1board.receiveAttack(p1board.gameBoard[0])
     p1board.receiveAttack(p1board.gameBoard[0])
-    expect(shipToHit?.hits).toBe(1)
+    expect(testShip?.hits).toBe(1)
   })
 
 });
@@ -74,11 +85,12 @@ describe('gameboard can report if sunk', () => {
   p1board.receiveAttack(p1board.gameBoard[0])
 
   test('unsunk returns false', () => {
-    expect(p1board.checkSunk()).toBeFalsy
+    expect(p1board.checkIfAllSunk()).toBe(false)
   })
 
-  test('sunk returns true', () => {
+  test('all sunk returns true', () => {
     p1board.receiveAttack(p1board.gameBoard[1])
-    expect(p1board.checkSunk()).toBeTruthy
+    console.log(p1board.activeShips)
+    expect(p1board.checkIfAllSunk()).toBe(true)
   })
 })

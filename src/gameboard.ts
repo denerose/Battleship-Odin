@@ -7,11 +7,12 @@ export class Tile {
         public y: number,
         public occupied: boolean = false,
         public hit: boolean = false,
-        public shipKey?: Ship) { }
+        public shipKey?: string) { }
 }
 
 export class GameBoard {
     gameBoard: Tile[] = []
+    activeShips: Ship[] = []
 
     constructor(
         size: number
@@ -47,8 +48,9 @@ export class GameBoard {
             const shipToPlace = new Ship(type, size)
             placementArea.forEach((tile) => {
                 tile.occupied = true
-                tile.shipKey = shipToPlace
+                tile.shipKey = shipToPlace.key
             })
+            this.activeShips.push(shipToPlace)
         }
         return true;
     }
@@ -57,7 +59,10 @@ export class GameBoard {
         if (attackedTile.hit) { return false }
         else if (attackedTile.occupied) {
             attackedTile.hit = true
-            attackedTile.shipKey?.takeHit()
+            if (attackedTile.shipKey) {
+                const attackedShip = this.findShipFromKey(attackedTile.shipKey)
+                if (attackedShip) attackedShip.takeHit()
+            }
         }
         else attackedTile.hit = true
         return true
@@ -67,9 +72,14 @@ export class GameBoard {
         return this.gameBoard.find((tile) => tile.x == x && tile.y == y)
     }
 
-    public checkSunk() {
-        const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied)
-        return occupiedTiles.every((tile) => { if (tile.shipKey) { tile.shipKey.isSunk } })
+    findShipFromKey(keyToFind: string) {
+        const foundShip = this.activeShips.find((ship) => ship.key === keyToFind)
+        return foundShip
+    }
+
+    public checkIfAllSunk() {
+        // const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied)
+        return this.activeShips.every((ship) => ship.isSunk())
     }
 
     public getVacantTiles() {

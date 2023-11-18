@@ -50,16 +50,16 @@ export function handleClick(boardName: string, x: number, y: number) {
 }
 
 function checkWinner() {
-    if (P1.board.checkSunk() === false && !P2.board.checkSunk() === false) {
+    if (!P1.board.checkIfAllSunk() && !P2.board.checkIfAllSunk()) {
         gameInPlay = true
         return false
     }
-    else if (P1.board.checkSunk() === true) {
+    else if (P1.board.checkIfAllSunk() === true) {
         winner = P2.name
         gameInPlay = false
         return winner
     }
-    else if (P2.board.checkSunk() === true) {
+    else if (P2.board.checkIfAllSunk() === true) {
         winner = P1.name
         gameInPlay = false
         return winner

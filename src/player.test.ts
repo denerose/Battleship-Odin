@@ -21,6 +21,7 @@ describe('player can place ships', () => {
 
   test('P1 places a ship', () => {
     P1.placeShip(0, 0)
-    expect(P1.board.gameBoard[0].shipKey?.type).toBe("small");
+    expect(P1.board.gameBoard[0].occupied).toBe(true);
+    expect(P1.board.gameBoard[0].shipKey).toBeTruthy
   });
 });

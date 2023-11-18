@@ -13,14 +13,17 @@ function aiTurn(aiPlayer, targetPlayer) {
 }
 
 // src/ship.ts
+var import_uuid = require("uuid");
 var Ship = class {
   constructor(type, size) {
     this.type = "small";
-    this.size = 2;
     this.hits = 0;
-    this.isSunk = this.hits >= this.size ? true : false;
+    this.isSunk = () => {
+      return this.hits >= this.size ? true : false;
+    };
     this.size = size;
     this.type = type;
+    this.key = (0, import_uuid.v4)();
   }
   takeHit() {
     this.hits++;
@@ -40,6 +43,7 @@ var Tile = class {
 var GameBoard = class {
   constructor(size) {
     this.gameBoard = [];
+    this.activeShips = [];
     for (let x = 0; x < size; x++) {
       for (let y = 0; y < size; y++) {
         this.gameBoard.push(new Tile(x, y));
@@ -72,18 +76,22 @@ var GameBoard = class {
       const shipToPlace = new Ship(type, size);
       placementArea.forEach((tile) => {
         tile.occupied = true;
-        tile.shipKey = shipToPlace;
+        tile.shipKey = shipToPlace.key;
       });
+      this.activeShips.push(shipToPlace);
     }
     return true;
   }
   receiveAttack(attackedTile) {
-    var _a;
     if (attackedTile.hit) {
       return false;
     } else if (attackedTile.occupied) {
       attackedTile.hit = true;
-      (_a = attackedTile.shipKey) == null ? void 0 : _a.takeHit();
+      if (attackedTile.shipKey) {
+        const attackedShip = this.findShipFromKey(attackedTile.shipKey);
+        if (attackedShip)
+          attackedShip.takeHit();
+      }
     } else
       attackedTile.hit = true;
     return true;
@@ -91,13 +99,12 @@ var GameBoard = class {
   findTile(x, y) {
     return this.gameBoard.find((tile) => tile.x == x && tile.y == y);
   }
-  checkSunk() {
-    const occupiedTiles = this.gameBoard.filter((tile) => tile.occupied);
-    return occupiedTiles.every((tile) => {
-      if (tile.shipKey) {
-        tile.shipKey.isSunk;
-      }
-    });
+  findShipFromKey(keyToFind) {
+    const foundShip = this.activeShips.find((ship) => ship.key === keyToFind);
+    return foundShip;
+  }
+  checkIfAllSunk() {
+    return this.activeShips.every((ship) => ship.isSunk());
   }
   getVacantTiles() {
     return this.gameBoard.filter((tile) => !tile.hit);
@@ -198,14 +205,14 @@ function handleClick(boardName, x, y) {
   }
 }
 function checkWinner() {
-  if (P1.board.checkSunk() === false && !P2.board.checkSunk() === false) {
+  if (!P1.board.checkIfAllSunk() && !P2.board.checkIfAllSunk()) {
     gameInPlay = true;
     return false;
-  } else if (P1.board.checkSunk() === true) {
+  } else if (P1.board.checkIfAllSunk() === true) {
     winner = P2.name;
     gameInPlay = false;
     return winner;
-  } else if (P2.board.checkSunk() === true) {
+  } else if (P2.board.checkIfAllSunk() === true) {
     winner = P1.name;
     gameInPlay = false;
     return winner;
