@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "description": "Battleship JS Capstone - The Odin Project",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "tsup": {
     "entry": [
       "src/index.ts"
     ],
+    "treeshake": true,
+    "sourcemap": "inline",
+    "clean": true,
+    "dts": true,
     "splitting": false,
-    "sourcemap": true,
-    "clean": true
+    "bundle": true,
+    "format": [
+      "esm"
+    ],
+    "legacyOutput": true,
+    "skipNodeModulesBundle": false
   },
   "scripts": {
     "test": "jest",
@@ -21,13 +29,10 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.5",
-    "@types/uuid": "^9.0.7",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
-  "dependencies": {
-    "uuid": "^9.0.1"
-  }
+  "dependencies": {}
 }

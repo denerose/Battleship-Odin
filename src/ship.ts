@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid';
-
 export interface shipProps {
     type: string,
     size: number,
@@ -14,7 +12,7 @@ export class Ship {
     constructor(type: string, size: number) {
         this.size = size;
         this.type = type;
-        this.key = uuid()
+        this.key = crypto.randomUUID()
     }
 
     public isSunk = () => { return this.hits >= this.size ? true : false };
