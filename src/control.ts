@@ -64,6 +64,7 @@ function refreshTile(referenceTile: HTMLElement) {
 
 export function refreshBoards() {
     document.body.style.cursor = 'none';
+    document.body.style.pointerEvents = 'none';
 
     const P1Board = game.getP1Board()
     const P2Board = game.getP2Board()
@@ -82,6 +83,8 @@ export function refreshBoards() {
         P2Frame.appendChild(newTile)
     })
     document.body.style.cursor = 'auto';
+    document.body.style.pointerEvents = 'auto';
+
 
 }
 

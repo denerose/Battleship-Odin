@@ -31,6 +31,8 @@ export function getP2ShipsAvailable() {
 }
 
 export function handleClick(boardName: string, x: number, y: number) {
+    document.body.style.pointerEvents = 'none';
+
     const currentPlayer: Player = getCurrentPlayer() as Player
     const enemyPlayer: Player = getEnemyPlayer() as Player
     if (boardName === currentPlayer.name) {
@@ -54,6 +56,8 @@ export function handleClick(boardName: string, x: number, y: number) {
         }
         return true
     }
+    document.body.style.pointerEvents = 'auto';
+
 }
 
 export function checkWinner() {
