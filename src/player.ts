@@ -8,7 +8,7 @@ export class Player {
         public name: string,
         public human: boolean = true,
         public takingTurn = true,
-        public shipsAvailable: shipProps[] = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }],
+        public shipsAvailable: shipProps[] = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }, { type: 'huge', size: 4 }],
         public board = new GameBoard(9),
         public placingShips = true,
     ) {
@@ -42,8 +42,9 @@ export class Player {
             const shipToPlace = this.shipBeingPlaced
             const target = this.board.findTile(x, y)
             if (target && shipToPlace && !target.occupied) {
-                this.board.placeShip(shipToPlace.type, shipToPlace.size, target)
-                this.shipsAvailable.pop()
+                if (this.board.placeShip(shipToPlace.type, shipToPlace.size, target)) {
+                    this.shipsAvailable.pop()
+                }
                 if (this.shipsAvailable.length === 0) {
                     this.shipBeingPlaced = undefined
                     this.placingShips = false

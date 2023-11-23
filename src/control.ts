@@ -113,6 +113,7 @@ export function refreshHarbours() {
 function shipShadow(owner: string, hoverTile: Tile) {
     const shipToPlace = game.getShipBeingPlaced() as shipProps
     const highlightArea: HTMLElement[] = []
+    if (hoverTile.occupied) { return }
     for (let index = 0; index < shipToPlace.size; index++) {
         const tileID = `${owner}-${hoverTile.x}-${hoverTile.y + index}`
         const tileToHighlight = document.getElementById(tileID)
