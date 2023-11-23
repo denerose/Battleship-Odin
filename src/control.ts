@@ -28,6 +28,7 @@ function createTile(owner: string, tile: Tile) {
             game.handleClick(owner, tile.x, tile.y)
             refreshBoards()
             refreshHarbours()
+            game.checkWinner()
         }
     })
     if (game.getCurrentPlayer()?.placingShips && owner === game.getCurrentPlayer()?.name) {
@@ -114,6 +115,7 @@ function shipShadow(owner: string, hoverTile: Tile) {
     const shipToPlace = game.getShipBeingPlaced() as shipProps
     const highlightArea: HTMLElement[] = []
     if (hoverTile.occupied) { return }
+    if (owner != game.getCurrentPlayer()?.name) { return }
     for (let index = 0; index < shipToPlace.size; index++) {
         const tileID = `${owner}-${hoverTile.x}-${hoverTile.y + index}`
         const tileToHighlight = document.getElementById(tileID)

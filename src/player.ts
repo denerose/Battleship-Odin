@@ -44,13 +44,15 @@ export class Player {
             if (target && shipToPlace && !target.occupied) {
                 if (this.board.placeShip(shipToPlace.type, shipToPlace.size, target)) {
                     this.shipsAvailable.pop()
+
+                    if (this.shipsAvailable.length === 0) {
+                        this.shipBeingPlaced = undefined
+                        this.placingShips = false
+                        return true
+                    }
+                    else this.shipBeingPlaced = this.shipsAvailable.at(-1)
+                    return true
                 }
-                if (this.shipsAvailable.length === 0) {
-                    this.shipBeingPlaced = undefined
-                    this.placingShips = false
-                }
-                else this.shipBeingPlaced = this.shipsAvailable.at(-1)
-                return true
             }
         }
         else return false

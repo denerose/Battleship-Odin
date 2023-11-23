@@ -34,10 +34,12 @@ export function handleClick(boardName: string, x: number, y: number) {
     const currentPlayer: Player = getCurrentPlayer() as Player
     const enemyPlayer: Player = getEnemyPlayer() as Player
     if (boardName === currentPlayer.name) {
-        if (!currentPlayer.placingShips) { return false }
+        if (!currentPlayer.placingShips) {
+            alert("Your ships are places. Attack the enemy board by clicking a vacant square.")
+            return false
+        }
         else {
-            currentPlayer.placeShip(x, y)
-            if (gameInPlay && !enemyPlayer.human) {
+            if (currentPlayer.placeShip(x, y) && gameInPlay && !enemyPlayer.human) {
                 aiTurn(enemyPlayer, currentPlayer)
             }
             return true
@@ -46,13 +48,7 @@ export function handleClick(boardName: string, x: number, y: number) {
     if (boardName === enemyPlayer.name && !currentPlayer.placingShips) {
         if (enemyPlayer.board.findTile(x, y)?.hit) return false
         currentPlayer.placeAttack(enemyPlayer, x, y)
-        let isWinner = checkWinner()
-        if (isWinner) {
-            if (confirm(`${winner} won the game!\nPlay again?`) == true) {
-                setupGame()
-            }
-            else alert('Okay, bye bye!')
-        }
+        checkWinner()
         if (gameInPlay && !enemyPlayer.human) {
             aiTurn(enemyPlayer, currentPlayer)
         }
@@ -60,7 +56,8 @@ export function handleClick(boardName: string, x: number, y: number) {
     }
 }
 
-function checkWinner() {
+export function checkWinner() {
+    if (P1.placingShips || P2.placingShips) { return false }
     if (!P1.board.checkIfAllSunk() && !P2.board.checkIfAllSunk()) {
         gameInPlay = true
         return false
@@ -68,17 +65,32 @@ function checkWinner() {
     else if (P1.board.checkIfAllSunk() === true) {
         winner = P2.name
         gameInPlay = false
+        declareWinner()
         return winner
     }
     else if (P2.board.checkIfAllSunk() === true) {
         winner = P1.name
         gameInPlay = false
+        declareWinner()
         return winner
     }
     else {
         gameInPlay = true
         return false
     }
+}
+
+function declareWinner() {
+    if (winner != "TBC") {
+        if (confirm(`**${winner} won the game!**\nPlay again?`) == true) {
+            setupGame()
+        }
+        else {
+            let main = document.getElementById('main') as HTMLElement
+            main.style.display = "none"
+            alert('Okay, bye bye!')
+        }
+    } else return
 }
 
 export function getP1Board() {
