@@ -31,9 +31,9 @@ export class GameBoard {
             tilesToCheck.push(currentTile)
         }
         while (shipSize > tilesToCheck.length) {
-            let newTile = this.gameBoard.find((newTile) => newTile.x === currentTile.x && newTile.y === currentTile.y + 1);
-            if (newTile) {
-                currentTile = newTile
+            let newCheckedTile = this.gameBoard.find((newCheckedTile) => newCheckedTile.x === currentTile.x && newCheckedTile.y === currentTile.y + 1);
+            if (newCheckedTile) {
+                currentTile = newCheckedTile
                 tilesToCheck.push(currentTile)
             } else return []
         }
@@ -84,6 +84,11 @@ export class GameBoard {
 
     public getVacantTiles() {
         return this.gameBoard.filter((tile) => !tile.hit);
+    }
+
+    public isOccupied(x: number, y: number) {
+        const target = this.findTile(x, y)
+        if (target) target.occupied ? true : false
     }
 
 }

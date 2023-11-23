@@ -11,9 +11,6 @@ export function setupGame() {
     gameInPlay = true
 
     // temporary ship placement and setup
-    P1.placeShip(1, 1)
-    P1.placeShip(2, 2)
-    P1.placingShips = false
     P2.placeShip(1, 1)
     P2.placeShip(2, 2)
     P2.placingShips = false
@@ -29,6 +26,14 @@ const getEnemyPlayer = () => {
     if (P2.takingTurn && !P1.takingTurn) { return P1 }
 }
 
+export function getP1ShipsAvailable() {
+    return P1.shipsAvailable
+}
+
+export function getP2ShipsAvailable() {
+    return P2.shipsAvailable
+}
+
 export function handleClick(boardName: string, x: number, y: number) {
     const currentPlayer: Player = getCurrentPlayer() as Player
     const enemyPlayer: Player = getEnemyPlayer() as Player
@@ -40,6 +45,7 @@ export function handleClick(boardName: string, x: number, y: number) {
         }
     }
     if (boardName === enemyPlayer.name && !currentPlayer.placingShips) {
+        if (enemyPlayer.board.findTile(x, y)?.hit) return false
         currentPlayer.placeAttack(enemyPlayer, x, y)
         let isWinner = checkWinner()
         if (gameInPlay && !enemyPlayer.human) {
@@ -76,4 +82,9 @@ export function getP1Board() {
 
 export function getP2Board() {
     return P2.board.gameBoard
+}
+
+export function getShipBeingPlaced() {
+    const currentPlayer = getCurrentPlayer()
+    if (currentPlayer && currentPlayer.placingShips) return currentPlayer.shipBeingPlaced
 }
