@@ -10,7 +10,7 @@ W3.css is used minimally for page formatting. All app formatting and DOM control
 - P2 is a computer player that can make random moves (place ships and make attacks)
 - Game alerts on win/lose conditions
 
-## Planed improvements 
+## Planned/Future Tasks 
 - Add pretty game win display and scores
 - Add rotation to ship placements
 - Add 2 x human player and swap screen function
