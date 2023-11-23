@@ -18,6 +18,7 @@ function createTile(owner: string, tile: Tile) {
     }
     else if (tile.hit && tile.occupied) {
         newTile.className = "tile hit"
+        newTile.innerText = "hit!"
     }
     else {
         newTile.className = "tile"
@@ -90,18 +91,18 @@ export function refreshHarbours() {
     P1Harbour.innerHTML = '<h4>Harbour (ships to place)</h4>'
     const P2Harbour = document.getElementById("P2Harbour") as HTMLDivElement
     P2Harbour.innerHTML = '<h4>Harbour</h4>'
-    P1Ships.forEach((ship) => {
+    P1Ships.slice().reverse().forEach((ship) => {
         const newShipDiv = document.createElement('div')
         newShipDiv.innerText = `${ship.type} (${ship.size})`
         if (ship === game.getShipBeingPlaced()) {
-            newShipDiv.className = "currentShip"
+            newShipDiv.className = "harbourShip currentShip"
         }
         else {
             newShipDiv.className = "harbourShip"
         }
         P1Harbour.appendChild(newShipDiv)
     })
-    P2Ships.forEach((ship) => {
+    P2Ships.slice().reverse().forEach((ship) => {
         const newShipDiv = document.createElement('div')
         newShipDiv.innerText = `${ship.type} (${ship.size})`
         newShipDiv.className = "harbourShip"

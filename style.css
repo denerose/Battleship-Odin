@@ -1,7 +1,11 @@
 :root {
     --total: 9;
     --red: #bd2323;
+    --darkred: rgba(108, 15, 15, .95);
     --blue: #2361bd;
+    --highlight: rgba(244, 123, 143, 0.5);
+    --aqua: rgba(73, 145, 145, 0.9);
+    --green: rgba(82, 151, 82, 0.9);
 }
 
 main {
@@ -54,15 +58,23 @@ main {
 }
 
 .hit {
-    background-color: rgb(115, 201, 115);
+    background-color: var(--red);
+    border: 1px solid var(--red);
+    color: white;
+}
+
+#P2 .hit {
+    background-color: #2361bd;
+    border: 1px solid var(--blue);
+
 }
 
 .myship {
-    background-color: rgb(100, 242, 242);
+    background-color: var(--blue);
 }
 
 .shadow {
-    background-color: blueviolet;
+    background-color: var(--highlight);
 }
 
 .harbour {
@@ -87,5 +99,5 @@ main {
 }
 
 .currentShip {
-    color: yellow;
+    font-weight: bold;
 }

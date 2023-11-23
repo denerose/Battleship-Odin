@@ -72,7 +72,7 @@ export class GameBoard {
         return this.gameBoard.find((tile) => tile.x == x && tile.y == y)
     }
 
-    findShipFromKey(keyToFind: string) {
+    public findShipFromKey(keyToFind: string) {
         const foundShip = this.activeShips.find((ship) => ship.key === keyToFind)
         return foundShip
     }
@@ -93,5 +93,4 @@ export class GameBoard {
         const target = this.findTile(x, y)
         if (target) target.occupied ? true : false
     }
-
 }

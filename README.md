@@ -3,7 +3,7 @@ Javascript capstone for [The Odin Project](https://www.theodinproject.com/lesson
 
 Built in Typescript.
 
-W3.css is used minimally for page formatting. All app formatting is in a separate css.
+W3.css is used minimally for page formatting. All app formatting and DOM control is in a separate css and ts files.
 
 ## Current State
 - P1 is a human player and can place ships, make attacks, and win or lose the game
