@@ -1,5 +1,6 @@
 import * as game from "./game";
 import { Tile } from "./gameboard";
+import { shipProps } from "./ship";
 
 
 const P1Frame = document.getElementById("P1Frame") as HTMLDivElement
@@ -25,6 +26,7 @@ function createTile(owner: string, tile: Tile) {
         if (game.gameInPlay) {
             game.handleClick(owner, tile.x, tile.y)
             refreshBoards()
+            refreshHarbours()
         }
     })
     return newTile
@@ -40,6 +42,8 @@ function refreshTile(tile: Tile) {
 }
 
 export function refreshBoards() {
+    document.body.style.cursor = 'none';
+
     const P1Board = game.getP1Board()
     const P2Board = game.getP2Board()
 
@@ -56,4 +60,40 @@ export function refreshBoards() {
         const newTile = createTile("P2", tile)
         P2Frame.appendChild(newTile)
     })
+    document.body.style.cursor = 'auto';
+
+}
+
+export function refreshHarbours() {
+    const P1Ships = game.getP1ShipsAvailable()
+    const P2Ships = game.getP2ShipsAvailable()
+    const P1Harbour = document.getElementById("P1Harbour") as HTMLDivElement
+    P1Harbour.innerHTML = '<h4>Harbour (ships to place)</h4>'
+    const P2Harbour = document.getElementById("P2Harbour") as HTMLDivElement
+    P2Harbour.innerHTML = '<h4>Harbour</h4>'
+    P1Ships.forEach((ship) => {
+        const newShipDiv = document.createElement('div')
+        newShipDiv.innerText = `${ship.type} (${ship.size})`
+        if (ship == game.getShipBeingPlaced()) {
+            newShipDiv.className = "harbourShip currentShip"
+        }
+        else {
+            newShipDiv.className = "harbourShip"
+        }
+        P1Harbour.appendChild(newShipDiv)
+    })
+    P2Ships.forEach((ship) => {
+        const newShipDiv = document.createElement('div')
+        newShipDiv.innerText = `${ship.type} (${ship.size})`
+        newShipDiv.className = "harbourShip"
+        P2Harbour.appendChild(newShipDiv)
+    })
+}
+
+function shipShadow(owner: string, hoverTile: Tile) {
+    const shipToPlace = game.getShipBeingPlaced() as shipProps
+    for (let index = 0; index < shipToPlace.size; index++) {
+        const tileID = `${owner}-${hoverTile.x}-${hoverTile.y + index}`
+        const tileToHighlight = document.getElementById(tileID)
+    }
 }

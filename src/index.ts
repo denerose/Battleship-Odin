@@ -3,3 +3,4 @@ import { setupGame } from "./game"
 
 setupGame()
 DOM.refreshBoards()
+DOM.refreshHarbours()
