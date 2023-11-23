@@ -29,6 +29,14 @@ function createTile(owner: string, tile: Tile) {
             refreshHarbours()
         }
     })
+    if (game.getCurrentPlayer()?.placingShips && owner === game.getCurrentPlayer()?.name) {
+        newTile.addEventListener('mouseenter', () => {
+            shipShadow(owner, tile)
+        })
+        newTile.addEventListener('mouseleave', () => {
+            removeShipShadow(owner, tile)
+        })
+    }
     return newTile
 }
 
@@ -37,7 +45,18 @@ function clickRef(idString: string) {
     return params
 }
 
-function refreshTile(tile: Tile) {
+function refreshTile(referenceTile: HTMLElement) {
+    const idArray = clickRef(referenceTile.id)
+    const owner = idArray[0]
+    const x = Number(idArray[1])
+    const y = Number(idArray[2])
+    if (owner === 'P1') {
+        const boardInfo = game.P1.board
+        const tileInfo = boardInfo.findTile(x, y)
+        if (tileInfo?.occupied) {
+            referenceTile.className = "tile myship"
+        } else { referenceTile.className = "tile" }
+    }
 
 }
 
@@ -74,8 +93,8 @@ export function refreshHarbours() {
     P1Ships.forEach((ship) => {
         const newShipDiv = document.createElement('div')
         newShipDiv.innerText = `${ship.type} (${ship.size})`
-        if (ship == game.getShipBeingPlaced()) {
-            newShipDiv.className = "harbourShip currentShip"
+        if (ship === game.getShipBeingPlaced()) {
+            newShipDiv.className = "currentShip"
         }
         else {
             newShipDiv.className = "harbourShip"
@@ -92,8 +111,30 @@ export function refreshHarbours() {
 
 function shipShadow(owner: string, hoverTile: Tile) {
     const shipToPlace = game.getShipBeingPlaced() as shipProps
+    const highlightArea: HTMLElement[] = []
     for (let index = 0; index < shipToPlace.size; index++) {
         const tileID = `${owner}-${hoverTile.x}-${hoverTile.y + index}`
         const tileToHighlight = document.getElementById(tileID)
+        if (tileToHighlight) { highlightArea.push(tileToHighlight) }
+        else break
     }
+    if (highlightArea.length === shipToPlace.size) {
+        highlightArea.forEach((highlightedTile) => {
+            highlightedTile.className = "tile shadow"
+        })
+    }
+}
+
+function removeShipShadow(owner: string, hoverTile: Tile) {
+    const shipToPlace = game.getShipBeingPlaced() as shipProps
+    const highlightArea: HTMLElement[] = []
+    for (let index = 0; index < shipToPlace.size; index++) {
+        const tileID = `${owner}-${hoverTile.x}-${hoverTile.y + index}`
+        const tileToHighlight = document.getElementById(tileID)
+        if (tileToHighlight) { highlightArea.push(tileToHighlight) }
+        else break
+    }
+    highlightArea.forEach((highlightedTile) => {
+        refreshTile(highlightedTile)
+    })
 }

@@ -16,7 +16,7 @@ export function setupGame() {
     P2.placingShips = false
 }
 
-const getCurrentPlayer = () => {
+export const getCurrentPlayer = () => {
     if (P1.takingTurn && !P2.takingTurn) { return P1 }
     if (P2.takingTurn && !P1.takingTurn) { return P2 }
 }

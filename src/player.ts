@@ -11,7 +11,9 @@ export class Player {
         public shipsAvailable: shipProps[] = [{ type: 'tiny', size: 1 }, { type: 'small', size: 2 }],
         public board = new GameBoard(9),
         public placingShips = true,
-    ) { }
+    ) {
+        this.shipBeingPlaced = this.shipsAvailable.at(-1)
+    }
 
     public placeAttack(enemyPlayer: Player, x: number, y: number) {
         const target = enemyPlayer.board.findTile(x, y)
@@ -37,15 +39,16 @@ export class Player {
                 this.placingShips = false
                 return false
             }
-            const shipToPlace = this.shipsAvailable.pop()
-            this.shipBeingPlaced = shipToPlace
+            const shipToPlace = this.shipBeingPlaced
             const target = this.board.findTile(x, y)
-            if (target && shipToPlace) {
+            if (target && shipToPlace && !target.occupied) {
                 this.board.placeShip(shipToPlace.type, shipToPlace.size, target)
+                this.shipsAvailable.pop()
                 if (this.shipsAvailable.length === 0) {
                     this.shipBeingPlaced = undefined
                     this.placingShips = false
                 }
+                else this.shipBeingPlaced = this.shipsAvailable.at(-1)
                 return true
             }
         }
