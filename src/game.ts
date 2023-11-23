@@ -9,6 +9,7 @@ export function setupGame() {
     P1 = new Player("P1")
     P2 = new Player("P2", false, false)
     gameInPlay = true
+    winner = "TBC"
 }
 
 export const getCurrentPlayer = () => {
@@ -46,6 +47,12 @@ export function handleClick(boardName: string, x: number, y: number) {
         if (enemyPlayer.board.findTile(x, y)?.hit) return false
         currentPlayer.placeAttack(enemyPlayer, x, y)
         let isWinner = checkWinner()
+        if (isWinner) {
+            if (confirm(`${winner} won the game!\nPlay again?`) == true) {
+                setupGame()
+            }
+            else alert('Okay, bye bye!')
+        }
         if (gameInPlay && !enemyPlayer.human) {
             aiTurn(enemyPlayer, currentPlayer)
         }
