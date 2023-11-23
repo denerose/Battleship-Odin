@@ -81,8 +81,12 @@ export class GameBoard {
         return this.activeShips.every((ship) => ship.isSunk())
     }
 
-    public getVacantTiles() {
+    public getUnhitTiles() {
         return this.gameBoard.filter((tile) => !tile.hit);
+    }
+
+    public getVacantTiles() {
+        return this.gameBoard.filter((tile) => !tile.occupied);
     }
 
     public isOccupied(x: number, y: number) {

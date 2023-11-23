@@ -8,7 +8,7 @@ export function aiTurn(aiPlayer: Player, targetPlayer: Player) {
         aiPlayer.placeShip(target.x, target.y)
     }
     else if (!aiPlayer.placingShips) {
-        const legalMoves = targetPlayer.board.getVacantTiles()
+        const legalMoves = targetPlayer.board.getUnhitTiles()
         const chooseTarget = Math.floor(Math.random() * legalMoves.length);
         const target = legalMoves[chooseTarget]
         aiPlayer.placeAttack(targetPlayer, target.x, target.y)
