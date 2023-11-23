@@ -9,11 +9,6 @@ export function setupGame() {
     P1 = new Player("P1")
     P2 = new Player("P2", false, false)
     gameInPlay = true
-
-    // temporary ship placement and setup
-    P2.placeShip(1, 1)
-    P2.placeShip(2, 2)
-    P2.placingShips = false
 }
 
 export const getCurrentPlayer = () => {
@@ -41,6 +36,9 @@ export function handleClick(boardName: string, x: number, y: number) {
         if (!currentPlayer.placingShips) { return false }
         else {
             currentPlayer.placeShip(x, y)
+            if (gameInPlay && !enemyPlayer.human) {
+                aiTurn(enemyPlayer, currentPlayer)
+            }
             return true
         }
     }
