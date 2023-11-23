@@ -37,7 +37,7 @@ export function handleClick(boardName: string, x: number, y: number) {
     const enemyPlayer: Player = getEnemyPlayer() as Player
     if (boardName === currentPlayer.name) {
         if (!currentPlayer.placingShips) {
-            alert("Your ships are places. Attack the enemy board by clicking a vacant square.")
+            alert("Your ships are in place. Attack the enemy board by clicking a vacant square.")
             return false
         }
         else {
