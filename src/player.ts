@@ -44,7 +44,6 @@ export class Player {
             if (target && shipToPlace && !target.occupied) {
                 if (this.board.placeShip(shipToPlace.type, shipToPlace.size, target)) {
                     this.shipsAvailable.pop()
-
                     if (this.shipsAvailable.length === 0) {
                         this.shipBeingPlaced = undefined
                         this.placingShips = false
