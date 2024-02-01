@@ -1,5 +1,5 @@
 # Battleship Project
-Javascript capstone for [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-battleship) - Node/JS Path
+Javascript capstone for [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-battleship) - JS Course - Node/JS Path
 
 Built in Typescript.
 
